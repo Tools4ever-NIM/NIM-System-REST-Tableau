@@ -44,7 +44,7 @@
                     }
                 }
             },
-            "authentication": "client_credentials",
+            "authentication": "custom_post_token",
             "call_handling": "generic",
             "test_connection": {
                 "url": "/api/api-version/sites/{site_id}/users?pageSize=1&pageNumber=1"
@@ -52,16 +52,19 @@
         },
         "authOptions": {
             "authUrl": "https://{tenant_id}/api/3.9/auth/signin",
-            "body":{
-                "credentials":{
-                    "name": "{username}",
-                    "password": "{password}",
-                    "site": {
-                        "contentUrl": ""
-                    }
+            "postData": {
+                "credentials": {
+                    "name": "{user_name}",
+                    "password": "{password}"
                 }
             },
-            "directToken":true
+            "directToken": true,
+            "tokenPath": "credentials.token",
+            "headerName": "X-Tableau-Auth",
+            "headerTemplate": "{token}",
+            "dataToVariables": {
+                "site_id": "credentials.site.id"
+            }
         }
     },
     "connection": {
@@ -73,9 +76,9 @@
                 "value": ""
             },
             {
-                "name": "site_id",
+                "name": "content_url",
                 "type": "textbox",
-                "label": "Site ID:",
+                "label": "Content URL:",
                 "value": ""
             }
         ]
