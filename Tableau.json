@@ -7,7 +7,7 @@
                     "UsersList": {
                         "method": "get",
                         "call": {
-                            "path": "/api/api-version/sites/{site_id}/users"
+                            "path": "/api/2.2/sites/{site_id}/users"
                         },
                         "processing_options": {
                             "output_field": "users.user"
@@ -32,36 +32,41 @@
         "config": {
             "baseUrl": "https://{tenant_id}",
             "get": {
-                "maxPageCount": 5,
                 "query_parameters": {
                 },
                 "pagination":{
                     "mode":"generic",
                     "path":[],
                     "params":{
-                        "page":"{page_number}",
-                        "pagesize":"{page_size}"
+                        "pageNumber":"{page_number}",
+                        "pageSize":"{page_size}"
                     }
                 }
             },
-            "authentication": "client_credentials",
+            "authentication": "custom_post_token",
             "call_handling": "generic",
             "test_connection": {
-                "url": "/api/api-version/sites/{site_id}/users?pageSize=1&pageNumber=1"
+                "url": "/api/2.2/sites/{site_id}/users?pageSize=1&pageNumber=1"
             }
         },
         "authOptions": {
             "authUrl": "https://{tenant_id}/api/3.9/auth/signin",
-            "body":{
-                "credentials":{
-                    "name": "{username}",
+            "postData": {
+                "credentials": {
+                    "name": "{user_name}",
                     "password": "{password}",
                     "site": {
                         "contentUrl": ""
                     }
                 }
             },
-            "directToken":true
+            "directToken": true,
+            "tokenPath": "credentials.token",
+            "headerName": "X-Tableau-Auth",
+            "headerTemplate": "{token}",
+            "dataToVariables": {
+                "site_id": "credentials.site.id"
+            }
         }
     },
     "connection": {
@@ -73,10 +78,16 @@
                 "value": ""
             },
             {
-                "name": "site_id",
+                "name": "content_url",
                 "type": "textbox",
-                "label": "Site ID:",
+                "label": "Content URL:",
                 "value": ""
+            },
+            {
+                "name": "page_size",
+                "type": "textbox",
+                "label": "Page Size:",
+                "value": "100"
             }
         ]
     }
