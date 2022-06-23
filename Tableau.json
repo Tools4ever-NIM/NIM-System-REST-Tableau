@@ -7,7 +7,7 @@
                     "UsersList": {
                         "method": "get",
                         "call": {
-                            "path": "/api/2.2/sites/{site_id}/users"
+                            "path": "/api/{api_version}/sites/{site_id}/users"
                         },
                         "processing_options": {
                             "output_field": "users.user"
@@ -23,7 +23,73 @@
                     "id": "string*",
                     "lastLogin": "string*",
                     "name": "string*",
-                    "siteRole": "string*"
+                    "siteRole": "string*",
+                    "fullName": "string*",
+                    "authSetting": "string*",
+                    "language": "string*",
+                    "locale": "string*"
+                }
+            },
+            "Groups": {
+                "operations": {
+                    "GroupsList": {
+                        "method": "get",
+                        "call": {
+                            "path": "/api/{api_version}/sites/{site_id}/groups",
+                            "post_processing": "child_tables"
+                        },
+                        "processing_options": {
+                            "output_field": "groups.group"
+                        },
+                        "query_parameters": {
+                        }
+                    }
+                },
+                "parameters": {},
+                "key": "id",
+                "resources": {
+                    "domain": {
+                        "name": "string*"
+                    },
+                    "id": "string*",
+                    "name": "string*",
+                    "import": {
+                        "domainName": "string*",
+                        "siteRole": "string*",
+                        "grantLicenseMode": "string*"
+                    }
+                }
+            },
+            "GroupUsers": {
+                "operations": {
+                    "GroupsList": {
+                        "method": "get",
+                        "call": {
+                            "mode": "iteration",
+                            "table": "Groups",
+                            "iterator": "id",
+                            "path": "/api/{api_version}/sites/{site_id}/groups/{iterator}/users",
+                            "base": {
+                                "group_id": "{iterator}"
+                            }
+                        },
+                        "processing_options": {
+                            "output_field": "users.user"
+                        },
+                        "query_parameters": {
+                        }
+                    }
+                },
+                "parameters": {},
+                "key": "id",
+                "resources": {
+                    "externalAuthUserId": "string*",
+                    "id": "string*",
+                    "lastLogin": "string*",
+                    "name": "string*",
+                    "siteRole": "string*",
+                    "locale": "string*",
+                    "language": "string*"
                 }
             }
         }
@@ -46,11 +112,11 @@
             "authentication": "custom_post_token",
             "call_handling": "generic",
             "test_connection": {
-                "url": "/api/2.2/sites/{site_id}/users?pageSize=1&pageNumber=1"
+                "url": "/api/{api_version}/sites/{site_id}/users?pageSize=1&pageNumber=1"
             }
         },
         "authOptions": {
-            "authUrl": "https://{tenant_id}/api/3.9/auth/signin",
+            "authUrl": "https://{tenant_id}/api/{api_version}/auth/signin",
             "postData": {
                 "credentials": {
                     "name": "{user_name}",
@@ -76,6 +142,12 @@
                 "type": "textbox",
                 "label": "Tenent URL:",
                 "value": ""
+            },
+            {
+                "name": "api_version",
+                "type": "textbox",
+                "label": "Tenent URL:",
+                "value": "3.9"
             },
             {
                 "name": "content_url",
