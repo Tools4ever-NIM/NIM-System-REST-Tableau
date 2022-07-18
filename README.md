@@ -1,6 +1,10 @@
 # NIM-System-REST-Tableau
 
-Currently in dev
+## Current Available Data
+- Users
+- Groups
+- Group Users
+- Projects
 
 # Reference
 https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api.htm
