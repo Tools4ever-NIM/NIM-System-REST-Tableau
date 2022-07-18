@@ -1,7 +1,7 @@
 # NIM-System-REST-Tableau
 
 <p align="center">
-  <img src="Assets/Icon.png">
+  <img src="assets/icon.png">
 </p>
 
 ## Current Available Data
