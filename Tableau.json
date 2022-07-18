@@ -14,6 +14,75 @@
                         },
                         "query_parameters": {
                         }
+                    },
+                    "UsersCreate": {
+                        "method": "post",
+                        "call": {
+                            "mode": "normal",
+                            "path": "/api/{api_version}/sites/{site_id}/users"
+                        },
+                        "body":{
+                            "user": {
+                                        "name":"{name}",
+                                        "siteRole":"{siteRole}",
+                                        "authSetting":"{authSetting}"
+                            }
+                        },
+                        "semantics": "create",
+                        "resource_allowance_default": "prohibited",
+                        "resource_prohibited": [
+                            "externalAuthUserId",
+                            "id",
+                            "lastLogin",
+                            "fullName",
+                            "language",
+                            "locale"
+                        ],
+                        "resource_mandatory": [
+                            "name",
+                            "siteRole",
+                            "authSetting"
+                        ]
+                    },
+                    "UsersUpdate": {
+                        "method": "post",
+                        "call": {
+                            "mode": "normal",
+                            "path": "/api/{api_version}/sites/{site_id}/users/{id}"
+                        },
+                        "body":{
+                            "user": {
+                                        "fullName":"{fullName}",
+                                        "email":"{email}",
+                                        "password":"{password}",
+                                        "siteRole":"{siteRole}",
+                                        "authSetting":"{authSetting}"
+                            }
+                        },
+                        "semantics": "update",
+                        "resource_allowance_default": "optional",
+                        "resource_prohibited": [
+                            "externalAuthUserId",
+                            "name",
+                            "lastLogin",
+                            "language",
+                            "locale"
+                        ],
+                        "resource_mandatory": [
+                            "id"
+                        ]
+                    },
+                    "UsersDelete": {
+                        "method": "delete",
+                        "call": {
+                            "mode": "normal",
+                            "path": "/api/{api_version}/sites/{site_id}/users/{id}"
+                        },
+                        "semantics": "delete",
+                        "resource_allowance_default": "mandatory",
+                        "resource_mandatory": [
+                            "id"
+                        ]
                     }
                 },
                 "parameters": {},
@@ -27,7 +96,8 @@
                     "fullName": "string*",
                     "authSetting": "string*",
                     "language": "string*",
-                    "locale": "string*"
+                    "locale": "string*",
+                    "password": "string*"
                 }
             },
             "Groups": {
@@ -43,6 +113,37 @@
                         },
                         "query_parameters": {
                         }
+                    },
+                    "GroupsCreate": {
+                        "method": "post",
+                        "call": {
+                            "mode": "normal",
+                            "path": "/api/{api_version}/sites/{site_id}/groups"
+                        },
+                        "body":{
+                            "group": {
+                                        "name":"{name}",
+                                        "minimumSiteRole":"{minimumSiteRole}"
+                            }
+                        },
+                        "semantics": "create",
+                        "resource_allowance_default": "mandatory",
+                        "resource_mandatory": [
+                            "name",
+                            "minimumSiteRole"
+                        ]
+                    },
+                    "GroupsDelete": {
+                        "method": "delete",
+                        "call": {
+                            "mode": "normal",
+                            "path": "/api/{api_version}/sites/{site_id}/groups/{id}"
+                        },
+                        "semantics": "delete",
+                        "resource_allowance_default": "mandatory",
+                        "resource_mandatory": [
+                            "id"
+                        ]
                     }
                 },
                 "parameters": {},
@@ -57,12 +158,13 @@
                         "domainName": "string*",
                         "siteRole": "string*",
                         "grantLicenseMode": "string*"
-                    }
+                    },
+                    "minimumSiteRole":"string*"
                 }
             },
             "GroupUsers": {
                 "operations": {
-                    "GroupsList": {
+                    "GroupUsersList": {
                         "method": "get",
                         "call": {
                             "mode": "iteration",
@@ -78,11 +180,66 @@
                         },
                         "query_parameters": {
                         }
+                    },
+                    "GroupUsersAdd": {
+                        "method": "post",
+                        "call": {
+                            "mode": "normal",
+                            "path": "/api/{api_version}/sites/{site_id}/groups/{group_id}/users"
+                        },
+                        "query_parameters": {
+                            "action": "Add"
+                        },
+                        "body":{
+                            "User": {
+                                "id":"{id}"
+                            }
+                        },
+                        "semantics": "create",
+                        "resource_allowance_default": "mandatory",
+                        "resource_mandatory": [
+                            "group_id",
+                            "id"
+                        ]
+                    },
+                    "GroupUsersRemove": {
+                        "method": "delete",
+                        "call": {
+                            "mode": "normal",
+                            "path": "/api/{api_version}/sites/{site_id}/groups/{group_id}/users"
+                        },
+                        "query_parameters": {
+                            "action": "Add"
+                        },
+                        "body":{
+                            "User": {
+                                "id":"{id}"
+                            }
+                        },
+                        "semantics": "delete",
+                        "resource_allowance_default": "mandatory",
+                        "resource_mandatory": [
+                            "group_id",
+                            "id"
+                        ]
+                    }
+                },
+                "groupmembership": {
+                    "add_operation": "GroupUsersAdd",
+                    "remove_operation": "GroupUsersRemove",
+                    "member_table": "GroupUsers",
+                    "group_table": "Groups",
+                    "member_attributes": {
+                        "id": "id"
+                    },
+                    "group_attributes": {
+                        "id": "group_id"
                     }
                 },
                 "parameters": {},
                 "key": "id",
                 "resources": {
+                    "group_id": "string*",
                     "externalAuthUserId": "string*",
                     "id": "string*",
                     "lastLogin": "string*",
@@ -90,6 +247,49 @@
                     "siteRole": "string*",
                     "locale": "string*",
                     "language": "string*"
+                }
+            },
+            "Projects": {
+                "operations": {
+                    "ProjectsList": {
+                        "method": "get",
+                        "call": {
+                            "path": "/api/{api_version}/sites/{site_id}/projects"
+                        },
+                        "processing_options": {
+                            "output_field": "projects.project"
+                        },
+                        "query_parameters": {
+                        }
+                    }
+                },
+                "parameters": {},
+                "key": "id",
+                "resources": {
+                    "id": "string*",
+                    "name": "string*",
+                    "description":"string*",
+                    "topLevelProject":"string*",
+                    "writeable":"string*",
+                    "controllingPermissionsProjectId":"string*",
+                    "createdAt":"string*",
+                    "updatedAt":"string*",
+                    "contentPermissions":"string*",
+                    "parentProjectId":"string*",
+                    "owner": {
+                        "email":"_:string*",
+                        "fullName":"_:string*",
+                        "id":"_:string*",
+                        "lastLogin":"_:string*",
+                        "name": "_:string*",
+                        "siteRole":"_:string*"
+                    },
+                    "contentCounts": {
+                        "projectCount":"_:string*",
+                        "workbookCount":"_:string*",
+                        "viewCount":"_:string*",
+                        "datasourceCount":"_:string*"
+                    }
                 }
             }
         }
@@ -146,7 +346,7 @@
             {
                 "name": "api_version",
                 "type": "textbox",
-                "label": "Tenent URL:",
+                "label": "API Version:",
                 "value": "3.9"
             },
             {
