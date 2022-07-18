@@ -1,5 +1,9 @@
 # NIM-System-REST-Tableau
 
+<p align="center">
+  <img src="Assets/Icon.png">
+</p>
+
 ## Current Available Data
 - Users
 - Groups
