@@ -1,14 +1,21 @@
 # NIM-System-REST-Tableau
 
-<p align="center">
-  <img src="assets/icon.png">
-</p>
+<img src="https://github.com/Tools4ever-NIM/NIM-System-REST-Tableau/assets/24281600/23017a05-b533-4ad0-bfdc-acab3c152aea" width="256px" />
 
-## Current Available Data
+## Data Tables
 - Users
 - Groups
 - Group Users
 - Projects
 
-# Reference
-https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api.htm
+
+## Actions
+- Users
+    - Create/Update/Delete
+- Groups
+    - Create/Delete
+- Group Users
+    - Add/Remove 
+
+# NIM Docs
+The official NIM documentation can be found at: https://docs.nimsuite.com
